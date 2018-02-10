@@ -16,6 +16,10 @@ open(FILE,$PATH) || die("bad file");
 open(WFILE,">",$WPATH) || die ("bad boy");
 while ($line=<FILE>)
 {
+	$line =~ s/\r\n//g;
+	$line =~ s/\n//g;
+	$line =~ s/\r//g;
+	
 	$len = length($line)/3;
 	$len = ceil($len);
 	print "len:".$len."\n";
@@ -33,7 +37,7 @@ while ($line=<FILE>)
 	for ($id=1;$id<=$len;$id=$id+1)
 	{
 		$val = substr($line, ($id-1) *3,  3);
-		$remain=$id%10;
+		$remain=$id%20;
 		
 
 		if ($remain == 0)
@@ -54,20 +58,24 @@ while ($line=<FILE>)
 	
 	if ($line_val ne "")
 	{
-		$list[$index] = $line_val;
+		$list[$index] = $line_val."\n";
 		$index=$index+1;
 	}
 
 }
-
+#test
+#for ($i =1;$i < 1024; $i++)
+#{
+#	$list[$i] = $i."|";
+#}
 @plist;
 $index = 0;
 $page = @list;
-$page = $page/47;
+$page = $page/44;
 $ls=1;
-$page = 2;
+$page = ceil($page);
 
-for ($i = 1; $i <= $page; $i++)
+for ($i = 1; $i <= $page; $i=$i+2)
 {
 	$ls=1;
 	for ($t =1; $t <=44; $t++)
@@ -75,17 +83,18 @@ for ($i = 1; $i <= $page; $i++)
 		#first line
 		if ($ls == 1)
 		{
-			print WFILE "head\n";
+			print WFILE "\n";
 			$ls=$ls+1;
 		}
 		#midlle
 		if ($ls == 24)
 		{
-			print WFILE "middle\n";
+			print WFILE "\n";
 			$ls=$ls+1;
 		}
+		#line value
 		$start = $list[($i - 1)*44 + $t];
-		$end = $list[($i - 1)*44 + $t + 43];
+		$end = $list[($i - 1)*44 + $t + 44];
 		$start =~ s/\r\n//g;
 		$start =~ s/\n//g;
 		$end =~ s/\r\n//g;
@@ -96,7 +105,7 @@ for ($i = 1; $i <= $page; $i++)
 		#last
 		if ($ls == 46)
 		{
-			print WFILE "end\n";
+			print WFILE "\n";
 			$ls=$ls+1;
 		}
 		$ls=$ls+1;
