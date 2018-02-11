@@ -22,7 +22,7 @@ while ($line=<FILE>)
 	
 	$len = length($line)/3;
 	$len = ceil($len);
-	print "len:".$len."\n";
+	#print "len:".$len."\n";
 	$line_val="";
 	
 	if ($len <= 10)
@@ -37,7 +37,7 @@ while ($line=<FILE>)
 	for ($id=1;$id<=$len;$id=$id+1)
 	{
 		$val = substr($line, ($id-1) *3,  3);
-		$remain=$id%20;
+		$remain=$id%18;
 		
 
 		if ($remain == 0)
@@ -71,14 +71,14 @@ while ($line=<FILE>)
 @plist;
 $index = 0;
 $page = @list;
-$page = $page/44;
+$page = $page/53;
 $ls=1;
 $page = ceil($page);
 
 for ($i = 1; $i <= $page; $i=$i+2)
 {
 	$ls=1;
-	for ($t =1; $t <=44; $t++)
+	for ($t =1; $t <=48; $t++)
 	{
 		#first line
 		if ($ls == 1)
@@ -87,28 +87,30 @@ for ($i = 1; $i <= $page; $i=$i+2)
 			$ls=$ls+1;
 		}
 		#midlle
-		if ($ls == 24)
+		if ($ls == 26)
 		{
 			print WFILE "\n";
-			$ls=$ls+1;
+			print WFILE "\n";
+			print WFILE "\n";
+			$ls=$ls+3;
 		}
 		#line value
-		$start = $list[($i - 1)*44 + $t];
-		$end = $list[($i - 1)*44 + $t + 44];
+		$start = $list[($i - 1)*48 + $t];
+		$end = $list[($i - 1)*48 + $t + 48];
 		$start =~ s/\r\n//g;
 		$start =~ s/\n//g;
 		$end =~ s/\r\n//g;
 		$end =~ s/\n//g;
-		print WFILE $start.",".$end."\n";
-		
-		
+		print WFILE $start.",,".$end."\n";
+		$ls=$ls+1;
+	
 		#last
-		if ($ls == 46)
+		if ($ls == 53)
 		{
 			print WFILE "\n";
 			$ls=$ls+1;
 		}
-		$ls=$ls+1;
+		
 		
 	}
 	#$i=$i+1;
